@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 public final class OtpGen {
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final int OTP_DIGITS = 6;
+    
 
     private OtpGen() {
     }
