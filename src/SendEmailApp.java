@@ -1,4 +1,4 @@
-import com.genesiis.core.security.auth.tfa.otpgen;
+import com.genesiis.core.security.auth.tfa.OtpGen;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.SSLSocket;
@@ -16,7 +16,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
-public class SimpleMailtrapEmail {
+public class SendEmailApp {
     private static final String DEFAULT_HOST = "sandbox.smtp.mailtrap.io";
     private static final int DEFAULT_PORT = 2525;
     private static final String DEFAULT_USERNAME = "9031da9412c8bf";
@@ -27,7 +27,7 @@ public class SimpleMailtrapEmail {
     private static final String DEFAULT_BODY_PREFIX = "Your OTP is: ";
 
     public static void main(String[] args) throws Exception {
-        String otp = otpgen.send();
+        String otp = OtpGen.genarate();
         MailConfig config = MailConfig.hardCoded(otp);
 
         try (SmtpClient smtp = SmtpClient.connect(config.host(), config.port())) {
