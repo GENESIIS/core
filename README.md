@@ -1,54 +1,45 @@
 # OTP Mailtrap App
 
-This application generates a 6-digit OTP and sends it by email through Mailtrap SMTP using JavaMail (`jakarta.mail`).
+This application generates a 6-digit OTP and sends it by email.
+
+Email sending is implemented with the Factory pattern and supports 2 methods:
+
+- `raw-smtp`: custom SMTP client (no library needed)
+- `javamail`: Jakarta Mail (dependencies handled by Maven)
 
 ## How It Works
 
 1. `OtpGen.genarate()` creates a random 6-digit OTP.
-2. `SendEmailApp` reads Mailtrap SMTP settings from hardcoded values inside `src\SendEmailApp.java`.
-3. JavaMail opens the SMTP connection, starts TLS, authenticates, and sends the message.
-4. The app prints the OTP to the console after a successful send.
+2. `SendEmailApp` builds the email content + SMTP config from the constants in `src\SendEmailApp.java`.
+3. `EmailSenderFactory` selects the sender implementation based on `EMAIL_SENDER_METHOD`.
+4. The chosen sender sends the email and the app prints the OTP.
 
-## Files
+## Switch Email Method
 
-- `src\com\genesiis\core\security\auth\tfa\OtpGen.java` generates the OTP.
-- `src\SendEmailApp.java` creates and sends the email with JavaMail.
-- `pom.xml` declares the single JavaMail dependency and the run target.
+Open `src\SendEmailApp.java` and change:
 
-## Update Mailtrap Creds
+`EMAIL_SENDER_METHOD = "raw-smtp"`  (or `"javamail"`)
 
-Open `src\SendEmailApp.java` and update the hardcoded values before running the app.
+Aliases supported:
 
-Required values:
+- `rawemail` -> `raw-smtp`
+- `javaemail` -> `javamail`
 
-- `DEFAULT_USERNAME` with your Mailtrap username
-- `DEFAULT_PASSWORD` with your Mailtrap password
-- `DEFAULT_FROM` with your sender email
-- `DEFAULT_TO` with your receiver email
+## Update SMTP Creds
 
-Optional values:
+Open `src\SendEmailApp.java` and update:
 
-- `DEFAULT_HOST` defaults to `sandbox.smtp.mailtrap.io`
-- `DEFAULT_PORT` defaults to `2525`
-- `DEFAULT_SUBJECT` defaults to `Your OTP Code`
-- `DEFAULT_BODY_PREFIX` defaults to `Your OTP is: `
+- `DEFAULT_USERNAME`, `DEFAULT_PASSWORD`
+- `DEFAULT_FROM`, `DEFAULT_TO`
+- optional: `DEFAULT_HOST`, `DEFAULT_PORT`, `DEFAULT_SUBJECT`, `DEFAULT_BODY_PREFIX`
 
-## Build And Run
+## Run (Maven Only)
 
-Build with Maven:
+From PowerShell in `C:\genesiis-otp\core`:
 
 ```powershell
-mvn compile
+cd C:\genesiis-otp\core
+mvn "-Dmaven.repo.local=$((Resolve-Path .).Path)\\.m2\\repository" -q compile exec:java
 ```
 
-Run with Maven:
-
-```powershell
-mvn exec:java
-```
-
-Expected output:
-
-```text
-Email sent to Mailtrap with OTP: 123456
-```
+First run will download dependencies/plugins from Maven Central (make sure you have internet/proxy configured).
