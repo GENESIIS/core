@@ -10,7 +10,7 @@ public final class OtpGen {
     private OtpGen() {
     }
 
-    public static String genarate() {
+    public static String generate() {
         int value = RANDOM.nextInt(1_000_000);
         return String.format("%0" + OTP_DIGITS + "d", value);
     }

@@ -9,7 +9,7 @@ Email sending is implemented with the Factory pattern and supports 2 methods:
 
 ## How It Works
 
-1. `OtpGen.genarate()` creates a random 6-digit OTP.
+1. `OtpGen.generate()` creates a random 6-digit OTP.
 2. `SendEmailApp` builds the email content + SMTP config from the constants in `src\SendEmailApp.java`.
 3. `EmailSenderFactory` selects the sender implementation based on `EMAIL_SENDER_METHOD`.
 4. The chosen sender sends the email and the app prints the OTP.

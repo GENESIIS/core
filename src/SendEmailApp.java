@@ -19,7 +19,7 @@ public class SendEmailApp {
     private static final String DEFAULT_BODY_PREFIX = "Your OTP is: ";
 
     public static void main(String[] args) throws Exception {
-        String otp = OtpGen.genarate();
+        String otp = OtpGen.generate();
         MailConfig config = hardCodedConfig(otp);
 
         String senderId = EmailSenderFactory.normalize(EMAIL_SENDER_METHOD);
